@@ -63,14 +63,11 @@ def infix_to_postfix(expression):
         postfix.append(stack.pop())
     return postfix
 
-def main():
     
-    expression = sys.argv[1]
-    expression = expression.replace(" ", "") 
-    postfix = infix_to_postfix(expression)
-    tree = construct_tree(postfix)
-    result = calculate(tree)
-    print(result)
+expression = sys.argv[1]
+expression = expression.replace(" ", "") 
+postfix = infix_to_postfix(expression)
+tree = construct_tree(postfix)
+result = calculate(tree)
+print(result)
 
-if __name__ == "__main__":
-    main()
