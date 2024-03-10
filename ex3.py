@@ -27,20 +27,26 @@ def construct_tree(postfix):
     return stack.pop()
 
 def calculate(node):
-    if node.value.isdigit():
-        return int(node.value)
-    
-    left = calculate(node.left)
-    right = calculate(node.right)
-    
-    if node.value == '+':
-        return left + right
-    elif node.value == '-':
-        return left - right
-    elif node.value == '*':
-        return left * right
-    elif node.value == '/':
-        return left // right
+    if(node is not None):
+        if node.value.isdigit():
+            return int(node.value)
+        
+        left = calculate(node.left)
+        right = calculate(node.right)
+        
+        print(left, right)
+
+        if((left is not None) and (right is not None)):
+            if node.value == '+':
+                return left + right
+            elif node.value == '-':
+                return left - right
+            elif node.value == '*':
+                return left * right
+            elif node.value == '/':
+                return left // right
+    else:
+        return 0
 
 def infix_to_postfix(expression):
     precedence = {'+':1, '-':1, '*':2, '/':2}
@@ -54,19 +60,24 @@ def infix_to_postfix(expression):
         elif char == ')':
             while stack and stack[-1] != '(':
                 postfix.append(stack.pop())
-            stack.pop() 
+            if(len(stack) > 0):
+                stack.pop() 
         else:
             while stack and precedence.get(char, 0) <= precedence.get(stack[-1], 0):
                 postfix.append(stack.pop())
             stack.append(char)
     while stack:
-        postfix.append(stack.pop())
+        if(stack[-1] != '('):
+            postfix.append(stack.pop())
+        else:
+            stack.pop()
     return postfix
 
     
 expression = sys.argv[1]
 expression = expression.replace(" ", "") 
 postfix = infix_to_postfix(expression)
+print(postfix)
 tree = construct_tree(postfix)
 result = calculate(tree)
 print(result)
