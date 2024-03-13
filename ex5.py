@@ -32,44 +32,49 @@ class ListPriorityQueue:
         
 class HeapPriorityQueue:
     def __init__(self):
-        self.heap = []
+        self.array = []
+
+    def heapify(self, arr):
+        self.array = arr[:]
+        n = len(self.array)
+        # Start from the last and move up
+        for i in range(n // 2 - 1, -1, -1):
+            self._heapify_down(i, n)
 
     def enqueue(self, value):
-        self.heap.append(value)
-        self._sift_up(len(self.heap) - 1)
+        self.array.append(value)
+        self._heapify_up(len(self.array) - 1)
 
     def dequeue(self):
-        if len(self.heap) == 0:
+        if not self.array:
             return None
-        if len(self.heap) == 1:
-            return self.heap.pop()
-        root = self.heap[0]
-        self.heap[0] = self.heap.pop()  
-        self._sift_down(0)
+        if len(self.array) == 1:
+            return self.array.pop()
+        # Swap root with last element
+        root = self.array[0]
+        self.array[0] = self.array.pop()
+        self._heapify_down(0, len(self.array))
         return root
 
-    def _sift_up(self, index):
-        parent_index = (index - 1) // 2
-        if parent_index < 0:
-            return
-        if self.heap[index] < self.heap[parent_index]:
-            self.heap[index], self.heap[parent_index] = self.heap[parent_index], self.heap[index]
-            self._sift_up(parent_index)
+    def _heapify_up(self, index):
+        parent = (index - 1) // 2
+        if index > 0 and self.array[index] > self.array[parent]:
+            self.array[index], self.array[parent] = self.array[parent], self.array[index]
+            self._heapify_up(parent)
 
-    def _sift_down(self, index):
-        smallest = index
-        left_child = 2 * index + 1
-        right_child = 2 * index + 2
+    def _heapify_down(self, index, size):
+        left = 2 * index + 1
+        right = 2 * index + 2
+        largest = index
 
-        if left_child < len(self.heap) and self.heap[left_child] < self.heap[smallest]:
-            smallest = left_child
+        if left < size and self.array[left] > self.array[largest]:
+            largest = left
+        if right < size and self.array[right] > self.array[largest]:
+            largest = right
 
-        if right_child < len(self.heap) and self.heap[right_child] < self.heap[smallest]:
-            smallest = right_child
-
-        if smallest != index:
-            self.heap[index], self.heap[smallest] = self.heap[smallest], self.heap[index]
-            self._sift_down(smallest)
+        if largest != index:
+            self.array[index], self.array[largest] = self.array[largest], self.array[index]
+            self._heapify_down(largest, size)
 
 def generate_tasks(n=1000, enqueue_prob=0.7):
     return ["enqueue" if random.random() < enqueue_prob else "dequeue" for _ in range(n)]
