@@ -88,9 +88,11 @@ heapQueue = HeapPriorityQueue()
 listQueue = ListPriorityQueue()
 
 for i in tasks:
+
+    randInt = random.randint(1,10)
     if i == "enqueue":
-        heapTimes.append(timeit.timeit(lambda: heapQueue.enqueue(1), number=1))
-        listTimes.append(timeit.timeit(lambda: listQueue.enqueue(1), number=1))
+        heapTimes.append(timeit.timeit(lambda: heapQueue.enqueue(randInt), number=1))
+        listTimes.append(timeit.timeit(lambda: listQueue.enqueue(randInt), number=1))
     else:
         heapTimes.append(timeit.timeit(lambda: heapQueue.dequeue, number=1))
         listTimes.append(timeit.timeit(lambda: listQueue.dequeue, number=1))
@@ -103,6 +105,8 @@ print("Average time for List:", sum(listTimes)/len(listTimes))
 
 
 #4
-#It looks like the linked list is faster than the using a heap.
-#The extra work on heapifying each time we enqueue and dequeue may be adding extra time when compared to the 
-#linked list implementation.
+#It looks like the heap is faster than the using a list.
+#Pherhaps having to traverse the list each time when you enqueue an item to finds it place is slower.
+#As in a heap you keep going into subtrees of the heap more suited where the item is more likely to fit.
+#Unlike in a linked list as you have traverse over each item. Let say a 10 value has to traverse each element until the end
+#While in a heap you can jump the sections in the tree where the 10 could fit.

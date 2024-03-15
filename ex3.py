@@ -50,7 +50,7 @@ def calculate(node):
 
 
 def infix_to_postfix(expression):
-    precedence = {'+':1, '-':1, '*':2, '/':2}
+    precedence = {'+':1, '-':1,'–':1,'*':2, '/':2}
     stack = []
     postfix = []
     i = 0
